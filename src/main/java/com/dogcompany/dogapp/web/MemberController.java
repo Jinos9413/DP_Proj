@@ -232,6 +232,7 @@ public class MemberController {
 		map = service.selectOneMember(map);
 		System.out.println(map.get("NAME"));
 		System.out.println("허욱ㅇ허욱");
+		System.out.println("허욱ㅇ허욱");
 		return map;
 	}
 	
