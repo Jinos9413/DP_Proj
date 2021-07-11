@@ -1,0 +1,14 @@
+  	.page-title a{
+  		height: 50px;
+  		width: 180px;
+  		line-height: 50px;
+  		box-sizing: border-box;
+  		display: inline-block;
+  		color: black;
+  	}
+  	.page-title a:hover{
+  		background-color: #f3e077;
+  	}
+  	.page-title a.on{
+  		background-color: #f3e077;
+  	}

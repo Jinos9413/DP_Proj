@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.android">
+	<select id="androidSelectOneMember" parameterType="Map" resultType="Map">
+		SELECT m.*, t_no 
+		FROM MEMBER m
+		JOIN trainer t ON m.id = t.id
+		WHERE m.id=#{id} and pwd=#{pwd}
+	</select>
+	<select id="androidSelectCare1" resultType="Map">
+		SELECT * FROM care WHERE care_state = 1
+	</select>
+	<select id="androidSelectOneCare1" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM care c
+		JOIN member m ON c.id = m.id 
+		WHERE care_no = #{care_no}
+	</select>
+	<select id="androidSelectCareMapState1" parameterType="Map" resultType="CareDTO">
+		SELECT *
+		FROM care
+		WHERE care_no = #{care_no}
+	</select>
+	<select id="androidChatSelectCnoList" parameterType="Map" resultType="Map">
+		SELECT DISTINCT h.care_no,h.t_no 
+		FROM chat h 
+		JOIN care c ON h.care_no= c.care_no
+		WHERE id=#{id}
+	</select>
+	<select id="androidChatSelectCnoListOne" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM (
+		SELECT chat_content,chat_postdate,h.t_no,h.care_no,chat_no,care_title,pic_name,nickname,read_,from_id
+		FROM chat h 
+		JOIN care c ON h.care_no = c.care_no 
+		JOIN trainer t ON h.t_no = t.t_no
+		JOIN member m ON m.id = t.id
+		WHERE h.care_no = #{CARE_NO} AND h.t_no = #{T_NO} ORDER BY CHAT_POSTDATE DESC) 
+		WHERE ROWNUM = 1
+	</select>
+	<select id="androidChatSelecttnoList" parameterType="Map" resultType="Map">
+		SELECT DISTINCT care_no,h.t_no 
+		FROM chat h  
+		JOIN trainer t ON h.t_no = t.t_no
+		WHERE id=#{id} 
+	</select>
+	<select id="androidChatSelecttnoListOne" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM (
+		SELECT CHAT_CONTENT,CHAT_POSTDATE,h.T_NO,h.care_no,chat_no,care_title,pic_name,nickname,read_,from_id
+		FROM chat h 
+		JOIN care c ON h.care_no= c.care_no 
+		JOIN trainer t ON h.t_no = t.t_no
+		JOIN member m ON c.id = m.id
+		WHERE h.care_no = #{CARE_NO} AND h.t_no = #{T_NO} ORDER BY CHAT_POSTDATE DESC)
+		WHERE ROWNUM = 1
+	</select>
+	<select id="androidChatSelectChatList" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM chat h
+		WHERE care_no=#{care_no} AND t_no=#{t_no}
+		ORDER BY chat_no ASC
+	</select>
+	<update id="androidChatupdateRead_" parameterType="Map">
+		UPDATE chat SET read_= 0
+		WHERE care_no=#{care_no} AND t_no=#{t_no} AND NOT from_id=#{id}	
+	</update>
+	<select id="androidChatSelectCnoPerson" parameterType="Map" resultType="Map">
+		SELECT DISTINCT nickname, pic_name, m.id
+		FROM care c
+		JOIN member m ON c.id = m.id
+		WHERE care_no=#{care_no}
+	</select>
+	<select id="androidChatSelectTnoPerson" parameterType="Map" resultType="Map">
+		SELECT DISTINCT nickname, t_photo, m.id
+		FROM trainer t
+		JOIN member m ON t.id = m.id
+		WHERE t_no=#{t_no}
+	</select>
+</mapper>

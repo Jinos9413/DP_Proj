@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.dogapp">
+	<!-- 회원가입/로근인 관련 -->
+	<insert id="memberJoin" parameterType="Map">
+		INSERT INTO MEMBER(ID, PWD, NAME, NICKNAME,GENDER,ADDR,ADDR2,BIRTH,JOINDATE,POSTCODE,PIC_NAME,POWER) 
+		VALUES(#{id},#{pwd},#{name},#{nickname},#{gender},#{addr},#{addr2},to_date(#{birth},'YY/MM/DD'),DEFAULT,#{postcode},#{pic_name},DEFAULT)
+	</insert>
+	<select id="memberExist" parameterType="memberDTO" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE id=#{id}
+	</select>
+	<select id="memberidChk" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE ID = #{id}
+	</select>
+	<select id="membernickChk" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE NICKNAME = #{nickname}
+	</select>
+	<select id="memberIsMember" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM member WHERE id=#{id} AND pwd=#{pwd}	
+	</select>
+	<select id="memberGetPower" parameterType="Map" resultType="Map">
+		SELECT power FROM member WHERE id=#{id}	
+	</select>
+	<select id="selectTrainer" resultType="int">
+		SELECT t_no FROM trainer WHERE id = #{id}
+	</select>
+	<select id="memberGetAddr" parameterType="Map" resultType="Map">
+		SELECT addr FROM member WHERE id=#{id}	
+	</select>
+	<select id="memberSelectOneMember" parameterType="Map" resultType="Map">
+		SELECT * FROM member WHERE id=#{id}	
+	</select>
+	
+	<!-- 마이페이지 -->
+	<select id="memberList" parameterType="Map" resultType="Map">
+		SELECT * FROM member WHERE id = #{id}
+	</select>
+	<update id="updateProfile" parameterType="map" >
+		UPDATE member SET PWD=#{pwd} , NICKNAME=#{nickname}, ADDR=#{addr}, ADDR2=#{addr2}, PIC_NAME=#{pic_name}
+		WHERE id=#{id}	
+	</update>
+	<insert id="dogJoin" parameterType="Map">
+		INSERT INTO PET(ID,PET_NO, PET_NAME, PET_GENDER,PET_BIRTH,PET_WEIGHT,PET_PROFILE) 
+		VALUES(#{id},SEQ_PET.NEXTVAL,#{dog_name},#{dog_gender},#{dog_birth},#{dog_weight},#{petpic_name}) 
+	</insert>
+	<select id="dogList" parameterType="Map" resultType="Map">
+		SELECT p.* 
+		FROM pet p
+		JOIN member m ON m.id = p.id 
+		WHERE m.id =#{id}
+	</select>
+	<select id="dogSelectDogOne" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM pet  
+		WHERE PET_NO =#{SEQ_PET}
+	</select>
+	<update id="updateMypet" parameterType="map"  >
+		UPDATE PET SET 
+		PET_NAME=#{dog_name} , PET_GENDER=#{dog_gender}, PET_WEIGHT=#{dog_weight}, PET_PROFILE=#{petpic_name} 
+		WHERE PET_NO=#{SEQ_PET}
+	</update>
+	 
+	
+	
+	
+	
+	<!-- 돌봄 신청 게시판 -->
+	<select id="careIsLogin" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM member WHERE id=#{id} AND pwd=#{pwd}		
+	</select>
+	<select id="careSelectList" parameterType="Map" resultType="CareDTO">
+		SELECT * FROM (SELECT T.*,ROWNUM R FROM (SELECT c.*,name FROM care c JOIN member m ON c.id = m.id 
+		WHERE 1=1
+		<if test="state !=null">
+			AND care_state = #{state}
+		</if>
+		<if test="searchWord !=null">
+			AND care_clicklinea LIKE '%' || #{searchWord} || '%'
+		</if>
+		
+		ORDER BY care_no DESC) T)
+		WHERE R BETWEEN #{start} AND #{end}	
+	</select>
+	<select id="careselectListByLike" parameterType="Map" resultType="CareDTO">
+		SELECT * FROM (SELECT T.*,ROWNUM R FROM (
+			SELECT c.*,name 
+			FROM care c 
+			JOIN member m ON c.id = m.id 
+			JOIN t_care_like t ON c.care_no = t.care_no
+			WHERE t.t_no = #{t_no}
+			ORDER BY c.care_no DESC) T)
+		WHERE R BETWEEN #{start} AND #{end}	
+	</select>
+	<select id="careTotalCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM care c JOIN member m ON c.id=m.id
+		WHERE 1=1
+		<if test="state !=null">
+			AND care_state = #{state}
+		</if>
+		<if test="searchWord !=null">
+			AND care_clicklinea LIKE '%' || #{searchWord} || '%'
+		</if>		
+	</select>
+	<select id="getTotalRecordByLike" parameterType="Map" resultType="int">
+		SELECT COUNT(*) 
+		FROM care c 
+		JOIN t_care_like t ON c.care_no = t.care_no
+		WHERE t.t_no = #{t_no}
+	</select>
+	<insert id="careInsert" parameterType="Map">
+		INSERT INTO care
+		VALUES(SEQ_CARE.NEXTVAL,#{id},DEFAULT,#{care_title},#{care_content}, #{care_clickLineL} ,#{care_clickLineP},#{care_clickLineA},#{care_datepicker},#{care_timepicker},#{care_price},#{care_images},0,0,DEFAULT)
+	</insert>
+	<select id="careSelectOne" parameterType="Map" resultType="CareDTO">
+		SELECT c.*,m.name FROM
+		member m JOIN care c ON m.id= c.id
+		WHERE care_no = #{care_no}
+	</select>
+	<select id="careSelect" parameterType="Map" resultType="CareDTO">
+		SELECT c.*,m.name FROM
+		member m JOIN care c ON m.id= c.id
+	</select>
+	<select id="careFindNameById" parameterType="String" resultType="String">
+		SELECT name FROM member WHERE id=#{id}
+	</select>
+	<delete id="careDelete" parameterType="Map">
+		DELETE care WHERE care_no=#{care_no}
+	</delete>
+	<update id="careUpdate" parameterType="Map">
+		UPDATE care SET care_title=#{care_title} , care_content=#{care_content}, care_clickLineL=#{care_clickLineL},
+		 care_clickLineP=#{care_clickLineP}, care_clickLineA=#{care_clickLineA},care_datepicker=#{care_datepicker},
+		 care_timepicker=#{care_timepicker}, care_price=#{care_price}, care_images=#{care_images}
+		WHERE care_no=#{care_no}	
+	</update>
+	<insert id="careInsertcareServiceRating" parameterType="Map">
+		INSERT INTO trainer_rate 
+		VALUES(SEQ_TRAINER_RATE.NEXTVAL, #{t_no}, #{care_no}, #{trainer_rate}, #{t_r_content}, DEFAULT)
+	</insert>
+	<update id="careUpdateStateFinish" parameterType="Map">
+		UPDATE care SET care_state=3
+		WHERE care_no=#{care_no}	
+	</update>
+	<select id="careSelectRateOne" parameterType="Map" resultType="Map">
+		SELECT t_photo, trainer_rate, t_r_content, nickname
+		FROM trainer_rate r
+		JOIN trainer t ON r.t_no = t.t_no
+		JOIN member m ON t.id = m.id
+		WHERE care_no=#{care_no}
+	</select>
+	<select id="careGetAddress" parameterType="Map" resultType="Map">
+		SELECT addr
+		FROM member
+		WHERE id=#{id}
+	</select>
+	<select id="careSelectCountCareLike" parameterType="CareDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM T_CARE_LIKE
+		WHERE care_no=#{care_no}
+	</select>
+	<select id="careSelectCountCareChat" parameterType="CareDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM (SELECT DISTINCT care_no, t_no
+		FROM chat
+		WHERE care_no=#{care_no})
+	</select>
+	<select id="careSelectCheckLike" parameterType="CareDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM T_CARE_LIKE
+		WHERE care_no=#{care_no} and t_no=#{t_no}
+	</select>
+	<delete id="careDeleteLike" parameterType="Map">
+		DELETE t_care_like WHERE care_no=#{care_no} and t_no=#{t_no}
+	</delete>
+	<insert id="careInsertLike" parameterType="Map">
+		INSERT INTO t_care_like 
+		VALUES(SEQ_T_CARE_LIKE.NEXTVAL, #{t_no}, #{care_no}, DEFAULT)
+	</insert>
+	
+	
+	
+	<!-- 채팅관련 -->
+	<select id="dogSelectChatList" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM chat h
+		WHERE care_no=#{care_no} AND t_no=#{t_no}
+		ORDER BY chat_no ASC
+	</select>
+	<insert id="doginsertChatMessage" parameterType="Map">
+		INSERT INTO chat
+		VALUES(SEQ_CHAT.NEXTVAL,#{care_no} ,#{t_no}, #{from_id},#{chat_content},#{read_}, DEFAULT)
+	</insert>
+	<select id="chatSelectCnoList" parameterType="Map" resultType="Map">
+		SELECT DISTINCT h.care_no,h.t_no 
+		FROM chat h 
+		JOIN care c ON h.care_no= c.care_no
+		WHERE id=#{id}
+	</select>
+	<select id="chatSelectCnoListOne" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM (
+		SELECT chat_content,chat_postdate,h.t_no,h.care_no,chat_no,care_title,t_photo,nickname,read_,from_id
+		FROM chat h 
+		JOIN care c ON h.care_no = c.care_no 
+		JOIN trainer t ON h.t_no = t.t_no
+		JOIN member m ON m.id = t.id
+		WHERE h.care_no = #{CARE_NO} AND h.t_no = #{T_NO} ORDER BY CHAT_POSTDATE DESC) 
+		WHERE ROWNUM = 1
+	</select>
+	<select id="chatSelecttnoList" parameterType="Map" resultType="Map">
+		SELECT DISTINCT care_no,h.t_no 
+		FROM chat h  
+		JOIN trainer t ON h.t_no = t.t_no
+		WHERE id=#{id} 
+	</select>
+	<select id="chatSelecttnoListOne" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM (SELECT CHAT_CONTENT,CHAT_POSTDATE,h.T_NO,h.care_no,chat_no,care_title,pic_name,nickname,read_,from_id
+		FROM chat h 
+		JOIN care c ON h.care_no= c.care_no 
+		JOIN trainer t ON h.t_no = t.t_no
+		JOIN member m ON c.id = m.id
+		WHERE h.care_no = #{CARE_NO} AND h.t_no = #{T_NO} ORDER BY CHAT_POSTDATE DESC)
+		WHERE ROWNUM = 1
+	</select>
+	<update id="charupdateRead_" parameterType="Map">
+		UPDATE chat SET read_= 0
+		WHERE care_no=#{care_no} AND t_no=#{t_no} AND NOT from_id=#{id}	
+	</update>
+	<select id="chatSelectCnoPerson" parameterType="Map" resultType="Map">
+		SELECT DISTINCT nickname, pic_name, m.id
+		FROM care c
+		JOIN member m ON c.id = m.id
+		WHERE care_no=#{care_no}
+	</select>
+	<select id="chatSelectTnoPerson" parameterType="Map" resultType="Map">
+		SELECT DISTINCT nickname, t_photo, m.id
+		FROM trainer t
+		JOIN member m ON t.id = m.id
+		WHERE t_no=#{t_no}
+	</select>
+	<update id="chatUpdateState" parameterType="Map">
+		UPDATE care SET care_state=#{care_state}, t_no=#{t_no}
+		WHERE care_no=#{care_no}	
+	</update>
+	<select id="chatSelectIdByCareNo" parameterType="Map" resultType="String">
+		SELECT id 
+		FROM care
+		WHERE care_no=#{care_no} 
+	</select>
+	<select id="chatSelectIdByTNo" parameterType="Map" resultType="String">
+		SELECT id 
+		FROM trainer  
+		WHERE t_no=#{t_no} 
+	</select>
+	
+
+	<!-- petSitter 관리 -->
+	<insert id="insertPerSitter" parameterType="Map">
+		INSERT INTO trainer
+		VALUES(SEQ_TRAINER.NEXTVAL,#{id} ,#{t_title}, #{t_content},null,#{t_photo}, DEFAULT)
+	</insert>
+	<select id="trainerSelectReviewList" parameterType="Map" resultType="Map">
+		SELECT t.*, nickname, pic_name
+		FROM trainer_rate t
+		JOIN care c ON t.care_no = c.care_no
+		JOIN member m ON c.id = m.id
+		WHERE t.t_no = #{t_no}		
+	</select>
+	<select id="trainerSelectTrainerOne" parameterType="Map" resultType="Map">
+		SELECT t.*, nickname
+		FROM trainer t
+		JOIN member m ON t.id = m.id
+		WHERE t.t_no = #{t_no}		
+	</select>
+	
+	<!-- 추천산책로 게시판 -->
+	<select id="recommendationIsLogin" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM member WHERE id=#{id} AND pwd=#{pwd}		
+	</select>
+	<select id="recommendationSelectList" parameterType="Map" resultType="Map">
+		SELECT * FROM (SELECT T.*,ROWNUM R FROM (SELECT r.*,name FROM recommendation r JOIN member m ON r.id = m.id 
+		<if test="searchWord !=null">
+			WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'
+		</if>
+		
+		ORDER BY r_no DESC) T)
+		WHERE R BETWEEN #{start} AND #{end}	
+	</select>
+	<select id="recommendationTotalCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM recommendation r JOIN member m ON r.id=m.id
+		<if test="searchWord !=null">
+			WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'
+		</if>		
+	</select>
+	<insert id="recommendationInsert" parameterType="Map">
+		INSERT INTO recommendation
+		VALUES(SEQ_RECOMMENDATION.NEXTVAL,#{id},#{r_title},#{r_content},#{r_images},#{r_clickLineL},#{r_clickLineP},#{r_clickLineA},0,0,0,DEFAULT)
+	</insert>
+	<select id="recommendationSelectOne" parameterType="Map" resultType="Map">
+		SELECT r.*,m.nickname FROM
+		member m JOIN recommendation r ON m.id= r.id
+		WHERE r_no = #{r_no}
+	</select>
+	<select id="recommendationSelect" parameterType="Map" resultType="Map">
+		SELECT r.*,m.nickname FROM
+		member m JOIN recommendation r ON m.id= r.id
+	</select>
+	<select id="recommendationFindNameById" parameterType="String" resultType="String">
+		SELECT nickname FROM member WHERE id=#{id}
+	</select>
+	<delete id="recommendationDelete" parameterType="Map">
+		DELETE recommendation WHERE r_no=#{r_no}
+	</delete>
+	<update id="recommendationUpdate" parameterType="Map">
+		UPDATE recommendation SET r_title=#{r_title}, r_content=#{r_content}, r_images=#{r_images},
+		 r_clickLineL=#{r_clickLineL},r_clickLineP=#{r_clickLineP}, r_clickLineA=#{r_clickLineA}
+		WHERE r_no=#{r_no}	
+	</update>
+	<select id="recommendationSelectOneView" parameterType="Map" resultType="Map">
+		SELECT * FROM recommendation WHERE r_no=#{r_no}
+	</select>
+	
+	<!-- 사진 게시판 좋아요 -->
+	<select id="r_LikeCheck" parameterType="Map" resultType="Int">
+	SELECT COUNT(*) FROM r_like WHERE id=#{id} AND r_no=#{r_no}
+	</select>
+	 <insert id="r_LikeInsert" parameterType="Map">
+		INSERT INTO r_like
+		VALUES(SEQ_R_LIKE.NEXTVAL,#{r_no},#{id},DEFAULT)
+	</insert>
+	<delete id="r_LikeDelete" parameterType="Map">
+		DELETE r_like WHERE id=#{id} AND r_no=#{r_no}
+	</delete> 
+	<update  id = "r_GetLike" parameterType="Map">
+	UPDATE recommendation
+	SET r_likecount = (SELECT COUNT(*) FROM r_like WHERE r_no=#{r_no} )
+	WHERE r_no=#{r_no} 
+	</update>
+	<select id="r_LikeCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM r_like WHERE r_no=${r_no}
+	</select>
+	
+	<!-- 추천산책로 게시판 댓글 -->
+	<select id="r_SelectComment" parameterType="Map" resultType="Map" >
+		SELECT r.*, m.nickname 
+		FROM r_comment r 
+		JOIN member m ON m.id = r.id 
+		WHERE r_no=#{r_no}
+		ORDER BY r_c_no ASC
+	</select>
+	<insert id="r_InsertComment" parameterType="Map">
+		INSERT INTO r_comment
+		VALUES(SEQ_R_COMMENT.NEXTVAL,#{r_no},#{id},#{r_comment},DEFAULT)
+	</insert>
+	<delete id="r_DeleteComment" parameterType="Map">
+		DELETE r_comment WHERE r_c_no=#{r_c_no} 
+	</delete> 
+	<update  id = "r_SetCommentCount" parameterType="Map">
+	UPDATE recommendation
+	SET r_commentcount = (SELECT COUNT(*) FROM r_comment WHERE r_no=#{r_no} )
+	WHERE r_no=#{r_no} 
+	</update>
+	<select id="r_getlastRCNo" parameterType="Map" resultType="String" >
+	SELECT r_c_no
+	FROM(
+	    SELECT 
+	        * 
+	    FROM r_comment
+	    ORDER BY r_c_no DESC)
+	WHERE ROWNUM = 1
+	</select>
+	<select id="r_CommentCount" parameterType="Map" resultType="String">
+		SELECT COUNT(*) FROM r_comment WHERE r_no=${r_no}
+	</select>
+	
+	<!-- 추천 산책로 게시판 신고 -->
+	<insert id="r_ReportInsert" parameterType="Map">
+		INSERT INTO R_REPORT
+		VALUES(SEQ_R_REPORT.NEXTVAL,#{r_no},#{id},#{r_r_title},#{r_r_content},DEFAULT)
+	</insert>
+	
+	
+	<!-- 커뮤니티 사진 게시판 -->
+	<select id="p_IsLogin" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM member WHERE id=#{id} AND pwd=#{pwd}		
+	</select>
+	<select id="p_SelectList" parameterType="Map" resultType="PhotoDTO">
+		SELECT * FROM (SELECT T.*,ROWNUM R FROM (SELECT p.*,nickname,pic_name FROM photo p JOIN member m ON m.id = p.id 
+		<if test="searchWord !=null">
+			WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'
+		</if>
+		ORDER BY p_no DESC) T)
+		WHERE R BETWEEN #{start} AND #{end}	
+	</select>
+	<select id="p_TotalCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM photo p JOIN member m ON p.id=m.id
+		<if test="searchWord !=null">
+			WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'
+		</if>		
+	</select>
+	<insert id="p_Insert" parameterType="Map">
+		INSERT INTO photo
+		VALUES(SEQ_PHOTO.NEXTVAL,#{id},#{p_title},#{p_content}, #{p_images},DEFAULT,DEFAULT, DEFAULT , DEFAULT)
+	</insert>
+	<select id="p_SelectOne" parameterType="Map" resultType="Map">
+		SELECT p.*,m.nickname FROM
+		member m JOIN photo p ON m.id= p.id
+		WHERE p_no = #{p_no}
+	</select>
+	<select id="p_Select" parameterType="Map" resultType="PhotoDTO">
+		SELECT p.*,m.nickname FROM
+		member m JOIN photo p ON m.id= p.id
+	</select>
+	<select id="p_FindNameById" parameterType="String" resultType="String">
+		SELECT nickname FROM member WHERE id=#{id}
+	</select>
+	<delete id="p_Delete" parameterType="Map">
+		DELETE photo WHERE p_no=#{p_no}
+	</delete>
+	<update id="p_Update" parameterType="Map">
+		UPDATE photo SET p_title=#{p_title} , p_content=#{p_content}, p_images=#{p_images}
+		WHERE p_no=#{p_no}	
+	</update>
+	
+	
+	<!-- 사진 게시판 좋아요 -->
+	<select id="p_LikeCheck" parameterType="Map" resultType="Int">
+	SELECT COUNT(*) FROM p_like WHERE id=#{id} AND p_no=#{p_no}
+	</select>
+	 <insert id="p_LikeInsert" parameterType="Map">
+		INSERT INTO p_like
+		VALUES(SEQ_P_LIKE.NEXTVAL,#{p_no},#{id},DEFAULT)
+	</insert>
+	<delete id="p_LikeDelete" parameterType="Map">
+		DELETE p_like WHERE id=#{id} AND p_no=#{p_no}
+	</delete> 
+	<update  id = "p_GetLike" parameterType="Map">
+	UPDATE photo
+	SET p_likecount = (SELECT COUNT(*) FROM p_like WHERE p_no=#{p_no} )
+	WHERE p_no=#{p_no} 
+	</update>
+	<select id="p_LikeCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM p_like WHERE p_no=${p_no}
+	</select>
+	
+	<!-- 사진 게시판 댓글 -->
+	<select id="p_SelectComment" parameterType="Map" resultType="Map" >
+		SELECT p.*, m.nickname 
+		FROM p_comment p 
+		JOIN member m ON m.id = p.id 
+		WHERE p_no=#{p_no}
+		ORDER BY p_c_no ASC
+	</select>
+	<insert id="p_InsertComment" parameterType="Map">
+		INSERT INTO p_comment
+		VALUES(SEQ_P_COMMENT.NEXTVAL,#{p_no},#{id},#{p_comment},DEFAULT)
+	</insert>
+	<delete id="p_DeleteComment" parameterType="Map">
+		DELETE p_comment WHERE p_c_no=#{p_c_no} 
+	</delete> 
+	<update  id = "p_SetCommentCount" parameterType="Map">
+	UPDATE photo
+	SET p_commentcount = (SELECT COUNT(*) FROM p_comment WHERE p_no=#{p_no} )
+	WHERE p_no=#{p_no} 
+	</update>
+	<select id="p_getlastNCNo" parameterType="Map" resultType="String" >
+	SELECT p_c_no
+	FROM(
+	    SELECT 
+	        * 
+	    FROM p_comment
+	    ORDER BY p_c_no DESC)
+	WHERE ROWNUM = 1
+	</select>
+	<select id="p_CommentCount" parameterType="Map" resultType="String">
+		SELECT COUNT(*) FROM p_comment WHERE p_no=${p_no}
+	</select>
+	
+	<!-- 사진 게시판 신고 -->
+	<insert id="p_ReportInsert" parameterType="Map">
+		INSERT INTO P_REPORT
+		VALUES(SEQ_P_REPORT.NEXTVAL,#{p_no},#{id},#{p_r_title},#{p_r_content},DEFAULT)
+	</insert>
+	
+	
+</mapper>

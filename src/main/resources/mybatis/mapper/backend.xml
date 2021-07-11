@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.backend">
+	<select id="backSelectTrainerApplyList" resultType="Map">
+		SELECT *
+		FROM trainer t
+		JOIN member m ON t.id = m.id
+		WHERE power = 1
+	</select>
+	<select id="backSelectTrainerList" resultType="Map">
+		SELECT *
+		FROM trainer t
+		JOIN member m ON t.id = m.id
+		WHERE not power = 1 and not power = 0
+	</select>
+	<select id="backSelectOneTrainerApply" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM trainer t
+		JOIN member m ON t.id = m.id
+		WHERE t_no = #{t_no}
+	</select>
+	<update id="backTrainerApplyOk" parameterType="Map">
+		UPDATE
+		(
+	        SELECT *
+	        FROM member m
+	        JOIN trainer t ON m.id = t.id
+	        WHERE t_no = #{t_no}
+        )
+		SET power = 2
+	</update>
+	<delete id="backTrainerApplyNo" parameterType="Map">
+		DELETE
+		trainer
+		WHERE t_no = #{t_no}
+	</delete>
+	<select id="backSelectReviewList" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM trainer_rate
+		WHERE t_no = #{t_no}		
+	</select>
+	<update id="backTrainerNo" parameterType="Map">
+		UPDATE
+		(
+	        SELECT *
+	        FROM member m
+	        JOIN trainer t ON m.id = t.id
+	        WHERE t_no = #{t_no}
+        )
+		SET power = 3
+	</update>
+	<update id="backTrainerYes" parameterType="Map">
+		UPDATE
+		(
+	        SELECT *
+	        FROM member m
+	        JOIN trainer t ON m.id = t.id
+	        WHERE t_no = #{t_no}
+        )
+		SET power = 2
+	</update>
+	<select id="backSelectMemberList" resultType="Map">
+		SELECT *
+		FROM member
+		WHERE not power = 5 AND not power = 10
+	</select>
+	<select id="backSelectManagerList" resultType="Map">
+		SELECT *
+		FROM member
+		WHERE power = 5 or power = 10
+	</select>
+	<select id="backSelectOneMember" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM member
+		WHERE id=#{id}
+	</select>
+	<update id="backMemberNo" parameterType="Map">
+		UPDATE
+		member
+		SET power = 0
+		WHERE id=#{id}
+	</update>
+	<update id="backMemberYes" parameterType="Map">
+		UPDATE
+		member
+		SET power = 1
+		WHERE id=#{id}
+	</update>
+	<update id="backManagerNo" parameterType="Map">
+		UPDATE
+		member
+		SET power = 1
+		WHERE id=#{id}
+	</update>
+	<update id="backManagerYes" parameterType="Map">
+		UPDATE
+		member
+		SET power = 5
+		WHERE id=#{id}
+	</update>
+</mapper>
