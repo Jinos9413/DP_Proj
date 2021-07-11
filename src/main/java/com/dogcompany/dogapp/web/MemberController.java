@@ -231,6 +231,8 @@ public class MemberController {
 	public Map selectOneMember(@RequestParam Map map)throws Exception {
 		map = service.selectOneMember(map);
 		System.out.println(map.get("NAME"));
+		System.out.println("허욱ㅇ허욱");
+		System.out.println("허욱ㅇ허욱");
 		return map;
 	}
 	
