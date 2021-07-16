@@ -96,7 +96,10 @@
 										<a href="javascript:"><span class="likeSpan fa fa-heart" style="color: red; font-size: 20px;" id="like${item.R_NO}">&nbsp;${item.R_LIKECOUNT}</span></a>&nbsp;&nbsp;
 									</c:if>
 										<span class="fa fa-comment-o" style="color: black; font-size: 20px;" id="maincomment${item.R_NO}">&nbsp;${item.R_COMMENTCOUNT}</span>
+									<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true">신고하기</button>
 								</div>
+   									
+   					
 					          </div>
 					         </div>  
 						</c:forEach>
@@ -173,9 +176,6 @@
 					</div>
    				</div>
    				<div class="modal-footer1" style="text-align: center;">
-   					<!-- 
-   					<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true">신고하기</button>
-   					 -->
    					<button class="btn btn-info" data-dismiss="modal">닫기</button>
    					<span class ="modalset"></span>
    				</div>

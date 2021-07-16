@@ -43,7 +43,7 @@
      <section id="blog" class="section">
      <div class="container">
 		<div class="page-header">
-			<h1>한줄 메모 ㅎ223게시판<small>수정 페이지</small></h1>			
+			<h1>한줄 메모 게시판<small>수정 페이지</small></h1>			
 		</div>
 		<div class="row">
 		<div class="col-md-12">
