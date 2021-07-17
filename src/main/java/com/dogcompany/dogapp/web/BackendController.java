@@ -135,9 +135,10 @@ public class BackendController {
 		model.addAttribute("p_ReportList", reportList);
 		return "backend/report/P_Report";
 	}
-	@RequestMapping("SelectOneP_Report.do")
-	public @ResponseBody Map goSelectOneP_Report(Map map) {
+	@RequestMapping(value ="SelectOneP_Report.do",produces = "application/json; charset=UTF-8;")
+	public @ResponseBody Map goSelectOneP_Report(@RequestParam Map map) {
 		map = service.selectOneP_Report(map);
+		System.out.println("신고controller");
 		return map;
 	}
 	

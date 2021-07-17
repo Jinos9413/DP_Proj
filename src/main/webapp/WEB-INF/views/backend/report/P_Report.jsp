@@ -76,7 +76,7 @@
 								</thead>
 								<tbody>
 								<c:forEach items="${p_ReportList }" var="report" varStatus="loop">
-									<tr>
+									<tr id="reportP${report.P_NO}">
 										<th scope="row">${loop.count }</th>
 										<td><button class="reportClick" id="reportQ${report.P_R_NO }" value="${report.P_R_NO }">${report.P_R_NO}</button></td>
 										<td>${report.P_R_TITLE }</td>
@@ -163,14 +163,13 @@
 	$('.reportClick').click(function(){
 		var btnNo = this.id.split("Q")[1];
 		var No = this.value;
-		console.log(No);
 		$.ajax({
 			url:"<c:url value="/Backend/SelectOneP_Report.do" />",
 			type:"post",
 			dataType:'json',
 			data:
 				{
-					p_r_no:No
+					p_r_no:btnNo
 				},
 			success:function(data){
 				console.log(data);
@@ -180,7 +179,7 @@
 				$('#reportTitle').html(data.P_R_TITLE);
 				$('#reportContent').html(data.P_R_CONTENT);
 				$('#reportDate').html(data.P_R_POSTDATE);
-				$('#reportmodal').modal('show');
+				$('#reportModal').modal('show');
 			},
 			error: function(error){
 			}
@@ -189,10 +188,8 @@
   });
 	<!-- 게시글 자세히 보기 모달 -->
 	$('.contentClick').on('click',function(){
-	   	console.log("pNo : "+this.id.split('Q')[1]);
 	   	var pNo = this.id.split('Q')[1];
 	   	$('#P_NO').val(pNo);	
-	   	console.log(pNo);
 	   	//appen 다 비워주기
 	   	$('.modalset').html("");
 	   	$('#viewImages').html("");
@@ -290,7 +287,7 @@
     				success: function() {
     				     alert('Success'); // 성공시 코드
     				     $('#basic_modal').modal('hide');
-    				     //$('#P_list'+pNo).remove();
+    				     $('#reportP'+pNo).remove();
     				}
     			});
       	}

@@ -79,6 +79,7 @@ public class BackendDAO {
 	}
 
 	public Map selectOneP_Report(Map map) {
+		System.out.println("신고dao");
 		return sqlMapper.selectOne("selectOneP_Report");
 	}
 	public List<Map> selectR_ReportList() {
