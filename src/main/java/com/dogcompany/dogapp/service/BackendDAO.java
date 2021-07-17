@@ -72,5 +72,15 @@ public class BackendDAO {
 	public int managerYes(Map map) {
 		return sqlMapper.update("backManagerYes", map);
 	}
+
+	public List<Map> selectP_ReportList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map selectOneP_Report(Map map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }///////////class

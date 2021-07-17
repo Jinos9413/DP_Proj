@@ -69,41 +69,18 @@
 								<thead class="thead-dark">
 									<tr>
 										<th class="col-md-1" scope="col">no</th>
-										<th class="col-md-7" scope="col">신고 제목</th>
-										<th class="col-md-1" scope="col">글쓴이 ID</th>
-										<th class="col-md-1" scope="col">신고자 ID</th>
-										<th class="col-md-1" scope="col">권한</th>
-										<th class="col-md-1" scope="col">확인</th>
+										<th class="col-md-1" scope="col">신고 NO</th>
+										<th class="col-md-9" scope="col">신고 제목</th>
+										<th class="col-md-1" scope="col">글 NO</th>
 									</tr>
 								</thead>
 								<tbody>
-								<c:forEach items="${memberList }" var="member" varStatus="loop">
+								<c:forEach items="${p_ReportList }" var="report" varStatus="loop">
 									<tr>
 										<th scope="row">${loop.count }</th>
-										<td>${member.NAME }</td>
-										<td>${member.NICKNAME }</td>
-										<td><fmt:formatDate value="${member.BIRTH }" pattern="yyyy-MM-dd"/></td>
-										<td><fmt:formatDate value="${member.JOINDATE }" pattern="yyyy-MM-dd"/></td>
-										<td>
-											<c:if test="${member.POWER == 0 }"><span id="powerQ${member.ID }" style="color: red;">이용중지</span></c:if>
-											<c:if test="${member.POWER == 1 }"><span id="powerQ${member.ID }" >일반회원</span></c:if>
-											<c:if test="${member.POWER == 2 }"><span id="powerQ${member.ID }" >돌봄회원</span></c:if>
-											<c:if test="${member.POWER == 3 }"><span id="powerQ${member.ID }" style="color: red;">돌봄중지</span></c:if>
-										</td>
-										<td>
-											<button class="memberClick" id="memberQ${member.ID }" value="${member.ID }">상세보기</button>
-											<c:if test="${member.POWER != 0 }" var="memberFlag">
-												<button class="btnMemberNo" id="memberNoQ${member.ID }" value="${member.ID }">이용중지</button>
-												<button class="btnMemberYes" id="memberYesQ${member.ID }" value="${member.ID }" style="display: none;">정지해제</button>
-											</c:if>
-											<c:if test="${!memberFlag }">
-												<button class="btnMemberNo" id="memberNoQ${member.ID }" value="${member.ID }" style="display: none;">이용중지</button>
-												<button class="btnMemberYes" id="memberYesQ${member.ID }" value="${member.ID }" >정지해제</button>
-											</c:if>
-											<c:if test="${sessionScope.power == 10 }">
-												<button class="btnManagerYes" id="managerYesQ${member.ID }" value="${member.ID }">관리권한</button>
-											</c:if>
-										</td>
+										<td><button class="reportClick" id="reportQ${report.P_R_NO }" value="${report.P_R_NO }">${report.P_R_NO}</button></td>
+										<td>${report.P_R_TITLE }</td>
+										<td><button class="contentClick" id="contentQ${report.P_NO }" value="${report.P_NO }">${report.P_NO}</button></td>
 									</tr>
 								</c:forEach>
 								</tbody>
@@ -116,30 +93,53 @@
     </div>
   </div>
 </div>
-	<div class="modal  fade" id="memberModal" >
+	<!-- 신고 모달 -->
+	<div class="modal  fade" id="reportModal" >
    		<div class="modal-dialog ">
    			<div class="modal-content" style="padding: 20px;">
    				<div class="modal-header">
    					<button class="close" data-dismiss="modal"><span>&times;</span></button>
    				</div>
    				<div class="modal-body" style="padding-left: 10px;">
-   					<div style="text-align: center;">
-   						<img style="width: 100px; height: 100px;" id="memberPhoto" src="<c:url value="/resources/img/basicperson.png"/>" >
-					</div>
-					<p id="memberNickname" style="text-align: center;"></p>
-					<p>이름</p>
-	            	<p id="memberName"></p>
-					<p>생년월일</p>
-	            	<p id="memberBirth"></p>
-	            	<p>성별</p>
-	            	<p id="memberGender"></p>
-	            	<p>우편번호</p>
-	            	<p id="memberPostCode"></p>
-	            	<p>주소</p>
-	            	<p id="memberAddr"></p>
-	            	<p>가입일</p>
-	            	<p id="memberJoindate"></p>
-	            	
+					<p id="reportNo" style="text-align: center;"></p>
+					<p>신고자 ID</p>
+	            	<p id="reportID"></p>
+					<p>신고 제목</p>
+	            	<p id="reportTitle"></p>
+	            	<p>신고 내용</p>
+	            	<p id="reportContent"></p>
+	            	<p>신고 일자</p>
+	            	<p id="reportDate"></p>
+   				</div>
+   			</div>    		
+   		</div>    	
+   	</div>
+   	<!-- 게시글 자세히 보기 모달 -->
+   	<!-- 자세히보기 모달 -->
+	<div class="modal fade" id="basic_modal" data-backdrop="static">
+   		<div class="modal-dialog" style="width: 900px; display: table;" >
+   			<div class="modal-content">
+   				<div class="modal-header ">
+   					<button class="close" data-dismiss="modal"><span>&times;</span></button>
+   					<h2 class="modal-title text-center"><p id="P_TITLE" style="font-size: 0.9em;"></p></h2>
+   				</div>
+   				<div class="modal-body">
+   					<div class="row">
+   						<div class="col-md-7" style="padding-left: 40px;">
+		   					<!-- 사진 -->
+		   					<div data-ride="carousel" style="text-align: center;">
+			   					<div id="viewImages" style="width:100%; height: 300px; overflow: hidden;"></div>
+								<span class="lnr lnr-chevron-left" id="prevImage" style="cursor: pointer;"></span>
+								<span class="lnr lnr-chevron-right" id="nextImage" style="cursor: pointer;"></span>
+   							</div>
+   							<div style="padding-left: 20px; ">
+	   							<span id="NICKNAME"></span><br/><span id="P_CONTENT"></span><br/>
+	   							<input type="hidden" name="P_NO" id="P_NO" /> 
+   							</div>
+   						</div>
+   				<div class="modal-footer1" style="text-align: center;">
+   					<span class ="modalset"></span>
+   					<button class="btn btn-info" data-dismiss="modal">닫기</button>
    				</div>
    			</div>    		
    		</div>    	
@@ -160,35 +160,99 @@
   </body>
   <script>
   $(function(){
-	$('.memberClick').click(function(){
-		var btnID = this.id.split("Q")[1];
-		var ID = this.value;
-		console.log(ID);
+	$('.reportClick').click(function(){
+		var btnNo = this.id.split("Q")[1];
+		var No = this.value;
+		console.log(No);
 		$.ajax({
-			url:"<c:url value="/Backend/SelectOneMember.do" />",
+			url:"<c:url value="/Backend/SelectOneP_Report.do" />",
 			type:"post",
 			dataType:'json',
 			data:
 				{
-					id:ID
+					p_r_no:No
 				},
 			success:function(data){
 				console.log(data);
 				var count = 0;
-				$('#memberPhoto').attr('src', '<c:url value="/upload/'+data.PIC_NAME+'" />');
-				$('#memberNickname').html(data.NICKNAME);
-				$('#memberName').html(data.NAME);
-				$('#memberBirth').html(moment(new Date(data.BIRTH)).format('YYYY-MM-DD'));
-				$('#memberGender').html(data.GENDER);
-				$('#memberPostCode').html(data.POSTCODE);
-				$('#memberAddr').html(data.ADDR);
-				$('#memberJoindate').html(moment(new Date(data.JOINDATE)).format('YYYY-MM-DD'));
-				$('#memberModal').modal('show');
+				$('#reportNo').html(data.P_R_NO);
+				$('#reportID').html(data.ID);
+				$('#reportTitle').html(data.P_R_TITLE);
+				$('#reportContent').html(data.P_R_CONTENT);
+				$('#reportDate').html(data.P_R_POSTDATE);
+				$('#reportmodal').modal('show');
 			},
 			error: function(error){
 			}
 		});
   	});
+  });
+	<!-- 게시글 자세히 보기 모달 -->
+	$('.contentClick').on('click',function(){
+	   	console.log("pNo : "+this.id.split('Q')[1]);
+	   	var pNo = this.id.split('Q')[1];
+	   	$('#P_NO').val(pNo);	
+	   	console.log(pNo);
+	   	//appen 다 비워주기
+	   	$('.modalset').html("");
+	   	$('#viewImages').html("");
+	   	$.ajax({
+			url:"<c:url value="/Community/Photo/SelectOneView.do" />",//요청할 서버의 URL 주소
+			type:"post",//데이터 전송방식(디폴트는 get방식)
+			dataType:'json',//서버로부터 받을 응답 데이터의 형식 설정
+			data:
+				{
+					p_no:pNo
+				},
+			success:function(data){//서버로부터 정상적인 응답(200)을 받았을 때 호출되는 콜백함수
+				console.log(data);
+				//이미지 캐러셀
+				var images=(data.P_IMAGES).split("/")
+				for(var i = 0; i<images.length-1 ; i++){
+					$('#viewImages').append('<img style="width: 90%; display: none;" src="<c:url value="/upload/'+images[i]+'"/>" id="image'+i+'" class="image" >')
+					$('.image').mouseenter(function(){
+						   $('#up').css('display','');
+						   $('#up').html('<img style="width: 100%;height:"100%"" src="'+this.src+'">');
+					});
+					$('.image').mouseleave(function(){
+						   $('#up').css('display','none'); 
+					});
+				}
+				
+				var imageNum = 0;
+				var imageCount = $('.image').length;
+				
+				$('#image0').css("display","");
+				$('#nextImage').on('click',function(){
+					if(imageNum < imageCount-1){
+						$('#image'+imageNum+'').css("display","none");
+						imageNum++;
+						$('#image'+imageNum+'').css("display","");
+					}
+				});
+				$('#prevImage').on('click',function(){
+					if(imageNum > 0){
+						$('#image'+imageNum+'').css("display","none");
+						imageNum--;
+						$('#image'+imageNum+'').css("display","");
+					}
+				});
+				$('#P_NO').val(data.P_NO);
+				$('#P_TITLE').html(data.P_TITLE);
+				$('#P_CONTENT').html(data.P_CONTENT);
+				$('#NICKNAME').html(data.NICKNAME);
+				$('#P_LIKECOUNT').html(" "+data.P_LIKECOUNT);
+				$('#P_COMMENTCOUNT').html(" "+data.P_COMMENTCOUNT);
+				//삭제추가
+				$('.modalset').append('<a href="javascript:isDelete();" class="btn btn-success">삭제</a>')
+				$('.modalset').append('<button class="btnMemberNo" id="memberNoQ'+data.ID+'" value="'+data.ID+'" style="display: none;">이용중지</button>')
+				$('#basic_modal').modal('show');
+			},////////////success
+			error: function(error){//서버로부터 비정상적인 응답을 받았을 때 호출되는 콜백함수
+			}
+		});
+   });
+	<!--이용 권한 사라지게 하기-->
 	$('.btnMemberNo').click(function(){
 		var btnID = this.id.split("Q")[1];
 		var ID = this.value;
@@ -213,75 +277,26 @@
 			});
 		}
 	});
-	$('.btnMemberYes').click(function(){
-		var btnID = this.id.split("Q")[1];
-		var ID = this.value;
-		if(confirm("이용권한을 복구하시겠습니까?")){
-			$.ajax({
-				url:"<c:url value="/Backend/MemberYes.do"/>",
-				type:"post",
-				dataType:'json',
-				data:
-					{
-						id:ID
-					},
-				success:function(data){
-					console.log(data);
-					$('#memberYesQ'+btnID).css('display','none');
-					$('#memberNoQ'+btnID).css('display','');
-					$('#powerQ'+btnID).css('color','black');
-					$('#powerQ'+btnID).html('일반회원');
-				},
-				error: function(error){
-				}
-			});
-		}
-	 });
-	$('.btnManagerNo').click(function(){
-		var btnID = this.id.split("Q")[1];
-		var ID = this.value;
-		if(confirm("관리자 권한을 취소하시겠습니까?")){
-			$.ajax({
-				url:"<c:url value="/Backend/ManagerNo.do"/>",
-				type:"post",
-				dataType:'json',
-				data:
-					{
-						id:ID
-					},
-				success:function(data){
-					location.reload();
-				},
-				error: function(error){
-				}
-			});
-		}
-	});
-	$('.btnManagerYes').click(function(){
-		var btnID = this.id.split("Q")[1];
-		var ID = this.value;
-		if(confirm("관리자 권한을 부여하시겠습니까?")){
-			$.ajax({
-				url:"<c:url value="/Backend/ManagerYes.do"/>",
-				type:"post",
-				dataType:'json',
-				data:
-					{
-						id:ID
-					},
-				success:function(data){
-					location.reload();
-				},
-				error: function(error){
-				}
-			});
-		}
-	 });
-	
-	
-  });
+	//삭제확인 메소드
+	function isDelete(){
+		var pNo = $('#P_NO').val();
+		console.log("delete 값 "+pNo)
+      	if(confirm("정말로 삭제 하시겠습니까?")){
+      		 $.ajax({
+    				url:"<c:url value="/Community/Photo/P_Delete.do"/>", // 서버에 전달할 파일명
+    				dataType: 'text',
+    				type: 'post',
+    				data: {
+    					p_no : pNo,
+    				},
+    				success: function() {
+    				     alert('Success'); // 성공시 코드
+    				     $('#basic_modal').modal('hide');
+    				     $('#P_list'+pNo).remove();
+    				}
+    			});
+      	}
+    }///////////
+  
   </script>
-  
-  
-  
 </html>

@@ -228,7 +228,7 @@ CREATE TABLE R_LIKE
 CREATE TABLE R_REPORT
 (
 	R_R_NO number NOT NULL,
-	R_C_NO number NOT NULL,
+	R_NO number NOT NULL,
 	ID varchar2(50 char) NOT NULL,
 	R_R_TITLE nvarchar2(100) NOT NULL,
 	R_R_CONTENT nvarchar2(2000) NOT NULL,

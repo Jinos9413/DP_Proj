@@ -131,7 +131,16 @@ public class BackendController {
 	//신고관리
 	@RequestMapping("P_Report.do")
 	public String goP_Report(Model model, Map map) {
+		List<Map> reportList = service.selectP_ReportList();
+		model.addAttribute("memberList", reportList);
 		return "backend/report/P_Report";
+	}
+	
+
+	@RequestMapping("SelectOneP_Report.do")
+	public @ResponseBody Map goSelectOneP_Report(Map map) {
+		map = service.selectOneP_Report(map);
+		return map;
 	}
 	
 	@RequestMapping("R_Report.do")
