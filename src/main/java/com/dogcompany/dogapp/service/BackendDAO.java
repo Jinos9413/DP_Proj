@@ -74,13 +74,11 @@ public class BackendDAO {
 	}
 
 	public List<Map> selectP_ReportList() {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlMapper.selectList("selectP_ReportList");
 	}
 
 	public Map selectOneP_Report(Map map) {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlMapper.selectOne("selectOneP_Report");
 	}
 	
 }///////////class

@@ -101,4 +101,14 @@
 		SET power = 5
 		WHERE id=#{id}
 	</update>
+	<!-- 신고 관리 -->
+	<select id="selectP_ReportList" resultType="Map">
+		SELECT *
+		FROM p_report
+	</select>
+	<select id="selectOneP_Report" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM p_report
+		WHERE p_r_no=#{p_r_no}
+	</select>
 </mapper>
