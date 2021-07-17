@@ -381,13 +381,6 @@
 		});
    });
     
-   	//댓글 input요소 관련 내용. 댓글 입력 숨기기
-	/* $(".input-group").hide();
-	//댓글 모양 클릭시 댓글 입력 드러내기
-	$(".textSpan").click(function(){
-		$(this).parent().parent().find(".input-group").show();
-	}); */
-	
 	//댓글 쓰면 li요소에 출력
 	 $(".showBtn").click(function(){
 		var pNo = $('#P_NO').val();
@@ -444,7 +437,7 @@
 			}
 		});      
 	
-   //모달 속 그지같은 좋아요
+   //모달 속 좋아요
 	$("#P_LIKECOUNT").click(function(){
 		var pNo = $('#P_NO').val();
 		console.log("@@@@@@@@@@@@@@ P_NO : "+pNo);

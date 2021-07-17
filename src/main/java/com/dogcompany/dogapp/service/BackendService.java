@@ -70,6 +70,22 @@ public class BackendService {
 	public int managerYes(Map map) {
 		return dao.managerYes(map);
 	}
+	
+	//신고 관리
+	public List<Map> selectP_ReportList() {
+		return dao.selectP_ReportList();
+	}
+
+	public Map selectOneP_Report(Map map) {
+		return dao.selectOneP_Report(map);
+	}
+	public List<Map> selectR_ReportList() {
+		return dao.selectR_ReportList();
+	}
+
+	public Map selectOneR_Report(Map map) {
+		return dao.selectOneR_Report(map);
+	}
 
 
 	
