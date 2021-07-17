@@ -79,6 +79,13 @@ public class BackendService {
 	public Map selectOneP_Report(Map map) {
 		return dao.selectOneP_Report(map);
 	}
+	public List<Map> selectR_ReportList() {
+		return dao.selectR_ReportList();
+	}
+
+	public Map selectOneR_Report(Map map) {
+		return dao.selectOneR_Report(map);
+	}
 
 
 	

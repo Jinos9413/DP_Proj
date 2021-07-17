@@ -111,4 +111,13 @@
 		FROM p_report
 		WHERE p_r_no=#{p_r_no}
 	</select>
+	<select id="selectR_ReportList" resultType="Map">
+		SELECT *
+		FROM r_report
+	</select>
+	<select id="selectOneR_Report" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM r_report
+		WHERE r_r_no=#{r_r_no}
+	</select>
 </mapper>

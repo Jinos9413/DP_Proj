@@ -73,6 +73,7 @@ public class BackendDAO {
 		return sqlMapper.update("backManagerYes", map);
 	}
 
+	//신고 관리
 	public List<Map> selectP_ReportList() {
 		return sqlMapper.selectList("selectP_ReportList");
 	}
@@ -80,5 +81,11 @@ public class BackendDAO {
 	public Map selectOneP_Report(Map map) {
 		return sqlMapper.selectOne("selectOneP_Report");
 	}
-	
+	public List<Map> selectR_ReportList() {
+		return sqlMapper.selectList("selectR_ReportList");
+	}
+
+	public Map selectOneR_Report(Map map) {
+		return sqlMapper.selectOne("selectOneR_Report");
+	}
 }///////////class

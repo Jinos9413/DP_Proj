@@ -241,8 +241,6 @@
 				$('#P_TITLE').html(data.P_TITLE);
 				$('#P_CONTENT').html(data.P_CONTENT);
 				$('#NICKNAME').html(data.NICKNAME);
-				$('#P_LIKECOUNT').html(" "+data.P_LIKECOUNT);
-				$('#P_COMMENTCOUNT').html(" "+data.P_COMMENTCOUNT);
 				//삭제추가
 				$('.modalset').append('<a href="javascript:isDelete();" class="btn btn-success">삭제</a>')
 				$('.modalset').append('<button class="btnMemberNo" id="memberNoQ'+data.ID+'" value="'+data.ID+'" style="display: none;">이용중지</button>')
@@ -292,7 +290,7 @@
     				success: function() {
     				     alert('Success'); // 성공시 코드
     				     $('#basic_modal').modal('hide');
-    				     $('#P_list'+pNo).remove();
+    				     //$('#P_list'+pNo).remove();
     				}
     			});
       	}
