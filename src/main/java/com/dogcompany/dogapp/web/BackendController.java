@@ -128,5 +128,16 @@ public class BackendController {
 		return "backend/statistics/Charts";
 	}
 	
+	//신고관리
+	@RequestMapping("P_Report.do")
+	public String goP_Report(Model model, Map map) {
+		return "backend/report/P_Report";
+	}
+	
+	@RequestMapping("R_Report.do")
+	public String goR_Report(Model model, Map map) {
+		return "backend/report/R_Report";
+	}
+	
 	
 }

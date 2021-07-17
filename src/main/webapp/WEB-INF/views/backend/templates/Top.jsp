@@ -79,7 +79,7 @@
           	<a href="<c:url value="/Backend/Trainer.do"/>"><i class="la la-users"></i><span style="font-family: sans-serif;">돌보미 관리</span></a>
           </li>
           <li class=" nav-item">
-          	<a href="cards.html"><i class="la la-warning"></i><span style="font-family: sans-serif;">신고</span></a>
+          	<a href="<c:url value="/Backend/P_Report.do"/>"><i class="la la-warning"></i><span style="font-family: sans-serif;">신고</span></a>
           </li>
         </ul>
       </div>
