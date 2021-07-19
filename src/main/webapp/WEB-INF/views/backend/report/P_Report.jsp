@@ -182,6 +182,7 @@
 				$('#reportModal').modal('show');
 			},
 			error: function(error){
+				console.log(error)
 			}
 		});
   	});
@@ -240,7 +241,7 @@
 				$('#NICKNAME').html(data.NICKNAME);
 				//삭제추가
 				$('.modalset').append('<a href="javascript:isDelete();" class="btn btn-success">삭제</a>')
-				$('.modalset').append('<button class="btnMemberNo" id="memberNoQ'+data.ID+'" value="'+data.ID+'" style="display: none;">이용중지</button>')
+				$('.modalset').append('<button class="btnMemberNo" id="memberNoQ'+data.ID+'" value="'+data.ID+'">이용중지</button>')
 				$('#basic_modal').modal('show');
 			},////////////success
 			error: function(error){//서버로부터 비정상적인 응답을 받았을 때 호출되는 콜백함수
