@@ -77,6 +77,7 @@ public class BackendService {
 	}
 
 	public Map selectOneP_Report(Map map) {
+		System.out.println("신고service");
 		return dao.selectOneP_Report(map);
 	}
 	public List<Map> selectR_ReportList() {
