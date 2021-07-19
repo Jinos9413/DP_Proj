@@ -109,8 +109,11 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group" >
-							<input type="text" name="care_datepicker" id="datepicker"  placeholder="날짜선택" readonly="readonly" style="width: 45%; margin-bottom: 15px; padding: 10px; font-size: 14px; border-radius: 4px; border-color: #CCCCCC; border-style: solid; border-width: 1px;"/>
-						    <select name="care_timepicker" id="timepicker" style="width: 45%; margin-bottom: 15px; padding: 10px; font-size: 14px; border-radius: 4px; border-color: #CCCCCC;">
+							<input type="text" name="care_datepicker" id="datepicker"  placeholder="날짜선택" readonly="readonly"
+								 style="width: 45%; margin-bottom: 15px; padding: 10px; font-size: 14px; border-radius: 4px;
+								  border-color: #CCCCCC; border-style: solid; border-width: 1px;"/>
+						    <select name="care_timepicker" id="timepicker" style="width: 45%; margin-bottom: 15px; padding: 10px;
+						     	 font-size: 14px; border-radius: 4px; border-color: #CCCCCC;">
 						      <option disabled selected value="">시간선택</option>
 						      <option>7시</option><option>8시</option><option>9시</option><option>10시</option><option>11시</option>
 						      <option>12시</option><option>13시</option><option>14시</option><option>15시</option><option>16시</option>
@@ -184,14 +187,14 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <jsp:include page="/WEB-INF/views/templates/Notice.jsp"/>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d963a4891fae00b5fd892884ae34a387&libraries=services"></script>
-   <script>//지도!!!!
+   <script>
    
-   
+   		//지도:Cacao Map Api
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 	    mapOption = { 
 	        center: new kakao.maps.LatLng(37.5559, 126.9723), // 지도의 중심좌표
 	        level: 3 // 지도의 확대 레벨
-	    };
+	    };//
 
 	   var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	   
@@ -561,6 +564,8 @@
 			 }
 		});
 		
+		
+		//사진
 		$('#real-input').on('change',readImage);
 		function readImage(input) {
 			// 인풋 태그에 파일이 있는 경우

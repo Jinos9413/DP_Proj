@@ -211,8 +211,9 @@ public class CommunityController {
 	public String insert(@ModelAttribute("id") String id, @RequestParam Map map, HttpServletRequest req) {
 	
 		map.put("id", req.getSession().getAttribute("id"));//한줄 댓글 작성자의 아이디를 맵에 설정
-		 int flag = recommendationService.reportInsert(map);
+		int flag = recommendationService.reportInsert(map);
 		return "입력성공";//작성자 이름 반환
 	}
+
 	
 }

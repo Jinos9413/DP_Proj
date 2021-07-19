@@ -201,12 +201,7 @@
 		
 		
 		
-		
-		
-		
-		
-		
-		
+				
 //1]
 			//1] 버튼 선택안했을시 처음 띄울 지도 위치(서울역)
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -224,11 +219,8 @@
 			        center: new kakao.maps.LatLng(37.5559, 126.9723), // 지도의 중심좌표
 			        level: 3 // 지도의 확대 레벨
 			    }
-			  
 				// 지도를 생성합니다    
 				map = new kakao.maps.Map(mapContainer, mapOption); 
-				
-				
 				mapping(arr);
 			});
 			
@@ -397,10 +389,6 @@
 				 mapping(arr);
 			});
 		});///선택시 위도 경도 설정
-		
-		
-	
-		
 		mapping(arr);
   	</script>
   </body>
