@@ -138,7 +138,9 @@ public class BackendController {
 	@RequestMapping(value ="SelectOneP_Report.do",produces = "application/json; charset=UTF-8;")
 	public @ResponseBody Map goSelectOneP_Report(@RequestParam Map map) {
 		map = service.selectOneP_Report(map);
+		System.out.println(map);
 		System.out.println("신고controller");
+
 		return map;
 	}
 	
