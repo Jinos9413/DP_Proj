@@ -97,6 +97,7 @@
 									</c:if>
 										<span class="fa fa-comment-o" style="color: black; font-size: 20px;" id="maincomment${item.R_NO}">&nbsp;${item.R_COMMENTCOUNT}</span>
 									<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true">신고하기</button>
+									<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true" disabled="disabled">신고완료</button>
 								</div>
    									
    					
@@ -787,7 +788,7 @@
    	 //신고
    	 $('#btnreport').on('click',function(){
    		var rNo = $('#R_NO').val();
-		console.log("report R_NO1 : "+rNo);
+		console.log("report R_NO : "+rNo);
        	$("#myModal").modal('show');
        	$('#ReportR_NO').val(rNo);
        	
@@ -823,8 +824,8 @@
    				success: function(data) {
    				     alert('Success');// 성공시 코드
    				     if(data==1){
-   				    	$('#btnreportFinish').css('display', '');
-   				   		$('#btnreport').css('display','none');
+   				    	$('#btnreportFinish').css('display', '').show();
+   				   		$('#btnreport').hide();
    				     }
    				}
    			});
