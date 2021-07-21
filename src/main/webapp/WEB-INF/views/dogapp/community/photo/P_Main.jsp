@@ -324,10 +324,7 @@
 				//삭제 수정 추가
 				if(data.ID == pId){
 					$('.modalset').append('<a href="javascript:isDelete();" class="btn btn-success">삭제</a>')
-					/* $('.modal-footer1').append('<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true">신고하기</button>')
-					$('.modal-footer1').append('<button class="btn btn-info" data-dismiss="modal">닫기</button>') */
-					<!--신고완료-->
-   					<!-- <button class="btn btn-info" id="btnreportFinish" data-backdrop="static" data-keyboard="true"  style="display: none;"disabled="disabled">신고완료</button> -->
+					$('.modalset').append('<a href="javascript:isUpdate();" class="btn btn-success">수정</a>')
 				} 
 				
 				//좋아요 체크 
@@ -403,7 +400,7 @@
 					$('.listUl').append('<div><li class="comment" id="comment'+no+'"><strong>'+nickname+'</strong>&nbsp;'+content+'<div style="text-align:right;"><button class="p_commentdelete" type="button" id="delete'+no+'"style="border:none;font-size:0.2em;">삭제</button></div></li></div>');
 					$('#input').val("");
 					$('#defaultComment').html('');
-						//입력시 끝
+					//입력시 끝
 					$("#P_COMMENTCOUNT").html("&nbsp;"+commentCount);
 					$("#maincomment"+pNo).html("&nbsp;"+commentCount);
 					$("#memoDiv").scrollTop($("#memoDiv")[0].scrollHeight);
@@ -411,7 +408,7 @@
 			});
 			
 		}); 
-	//댓글 삭제 클릭시 삭제처리하기
+		//댓글 삭제 클릭시 삭제처리하기
 		$(document).on('click','.p_commentdelete',function(){
 			
 			if(confirm("정말로 삭제하시겠습니까?")){
@@ -569,16 +566,6 @@
             wPercent += 0.6;
           } , 10);
      }
-     
-    /*  $(function(){
-        $('button').click(function(){
-           console.log(this);
-           console.log(this.id);
-           var id = this.id;
-           
-           $('#'+id+'ul').append('<li role="presentation"><a role="menuitem" href="#">Action1</a></li>');
-        });
-     }); */
 
    	//신고
    	 $('#btnreport').on('click',function(){
