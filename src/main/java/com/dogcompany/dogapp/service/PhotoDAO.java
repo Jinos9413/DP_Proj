@@ -50,6 +50,7 @@ public class PhotoDAO {
 		return sqlMapper.selectOne("p_FindNameById", id);
 	}
 	
+	//좋아요 dao
 	public int likeInsert(Map map) {
 		return sqlMapper.insert("p_LikeInsert", map);
 	}
@@ -68,13 +69,12 @@ public class PhotoDAO {
 		return sqlMapper.selectOne("p_LikeCount",map);
 	}
 
+	//댓글 dao
 	public List<Map> selectComment(Map map) {
 		return sqlMapper.selectList("p_SelectComment",map);
-
 	}
 
 	public int insertCommnet(Map map) {
-		//insert는 무조건 영향받은 행의 수 반환 
 		return  sqlMapper.insert("p_InsertComment",map);
 	}
 
@@ -86,9 +86,6 @@ public class PhotoDAO {
 		return sqlMapper.selectOne("p_getlastNCNo", map);
 	}
 	
-
-
-
 	public int setCommentCount(Map map) {
 		return sqlMapper.update("p_SetCommentCount",map);
 
