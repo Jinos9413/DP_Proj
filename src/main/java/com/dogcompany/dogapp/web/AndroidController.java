@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,6 +71,14 @@ public class AndroidController {
 		});
 		return cnoList;
 	}
+	
+	//데이타베이스(FCM_TOKENS)에 토큰 입력처리용
+		@CrossOrigin
+		@PostMapping(value="/token",produces = "text/plain;charset=utf-8")
+		public String insertToken(@RequestParam String token) {
+			int affected=service.insertToken(token);
+			return affected==1?"입력 성공":"입력 실패";
+		}/////////////////
 	/*
 	 * POST http://localhost:9090/member1
 	 * :key = value의 형태로 전송
