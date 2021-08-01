@@ -264,25 +264,22 @@
    <script>
 	
    $('.btnView').on('click',function(){
-	   	console.log("pNo : "+this.id.split('Q')[1]);
 	   	var pNo = this.id.split('Q')[1];
 	   	var pId = "${sessionScope.id}";
 	   	$('#P_NO').val(pNo);	
-	   	console.log(pNo);
-	   	//appen 다 비워주기
+	   	//append 다 비워주기
 	   	$('.modalset').html("");
 	   	$(".listUl").html("");
 	   	$('#viewImages').html("");
 	   	$.ajax({
-			url:"<c:url value="/Community/Photo/SelectOneView.do" />",//요청할 서버의 URL 주소
-			type:"post",//데이터 전송방식(디폴트는 get방식)
-			dataType:'json',//서버로부터 받을 응답 데이터의 형식 설정
+			url:"<c:url value="/Community/Photo/SelectOneView.do" />",
+			type:"post",
+			dataType:'json',
 			data:
 				{
 					p_no:pNo
 				},
-			success:function(data){//서버로부터 정상적인 응답(200)을 받았을 때 호출되는 콜백함수
-				console.log(data);
+			success:function(data){
 				//이미지 캐러셀
 				var images=(data.P_IMAGES).split("/")
 				for(var i = 0; i<images.length-1 ; i++){
@@ -295,7 +292,6 @@
 						   $('#up').css('display','none'); 
 					});
 				}
-				
 				var imageNum = 0;
 				var imageCount = $('.image').length;
 				
@@ -324,15 +320,11 @@
 				//삭제 수정 추가
 				if(data.ID == pId){
 					$('.modalset').append('<a href="javascript:isDelete();" class="btn btn-success">삭제</a>')
-					/* $('.modal-footer1').append('<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true">신고하기</button>')
-					$('.modal-footer1').append('<button class="btn btn-info" data-dismiss="modal">닫기</button>') */
-					<!--신고완료-->
-   					<!-- <button class="btn btn-info" id="btnreportFinish" data-backdrop="static" data-keyboard="true"  style="display: none;"disabled="disabled">신고완료</button> -->
+					$('.modalset').append('<a href="javascript:isUpdate();" class="btn btn-success">수정</a>')
 				} 
 				
 				//좋아요 체크 
 				var check = data.check;
-				console.log("check::::::"+check);
 				if(check == 1){
 					$('#P_LIKECOUNT').removeClass("fa fa-heart-o")
 		             .addClass("fa fa-heart")
@@ -343,17 +335,16 @@
 		             .addClass("fa fa-heart-o")
 		             .css("color", "black");
 				}
-				
 				//댓글 체크
 				$.ajax({
-					url:"<c:url value="/Community/Photo/SelectOneView2.do" />",//요청할 서버의 URL 주소
-					type:"post",//데이터 전송방식(디폴트는 get방식)
-					dataType:'json',//서버로부터 받을 응답 데이터의 형식 설정
+					url:"<c:url value="/Community/Photo/SelectOneView2.do" />",
+					type:"post",
+					dataType:'json',
 					data:
 						{
 							p_no:pNo
 						},
-					success:function(data){//서버로부터 정상적인 응답(200)을 받았을 때 호출되는 콜백함수
+					success:function(data){
 						console.log("commentlist : "+data);
 						console.log(data.length);
 						var comment = data;
@@ -364,7 +355,6 @@
 							for(var i = 0; i<data.length ; i++){
 								if(data[i].ID == pId){
 									$(".listUl").append('<div><li class="comment" id="comment'+data[i].P_C_NO+'"><strong>'+data[i].NICKNAME+'</strong>&nbsp;'+data[i].P_COMMENT+'<div style="text-align:right;"><button class="p_commentdelete" type="button" id="delete'+data[i].P_C_NO+'" style="border:none;font-size:0.2em;">삭제</button></div></li></div>');
-				
 								}
 								else{
 									$(".listUl").append('<div><li class="comment" id="comment'+data[i].P_C_NO+'"><strong>'+data[i].NICKNAME+'</strong>&nbsp;'+data[i].P_COMMENT+'</li></div>');
@@ -374,9 +364,8 @@
 					}/////////succes
 				});////////////////ajax		 
 				$('#basic_modal').modal('show');
-				
 			},////////////success
-			error: function(error){//서버로부터 비정상적인 응답을 받았을 때 호출되는 콜백함수
+			error: function(error){
 			}
 		});
    });
@@ -385,7 +374,7 @@
 	 $(".showBtn").click(function(){
 		var pNo = $('#P_NO').val();
 		var content = $('#input').val();
-			var inputMsg = $(this).parent().parent().find(".textInput").val()
+		var inputMsg = $(this).parent().parent().find(".textInput").val()
 			//ajax로 요청]			
 			$.ajax({
 			    url: "<c:url value="/Community/Photo/P_C_Write.do"/>",
@@ -403,7 +392,7 @@
 					$('.listUl').append('<div><li class="comment" id="comment'+no+'"><strong>'+nickname+'</strong>&nbsp;'+content+'<div style="text-align:right;"><button class="p_commentdelete" type="button" id="delete'+no+'"style="border:none;font-size:0.2em;">삭제</button></div></li></div>');
 					$('#input').val("");
 					$('#defaultComment').html('');
-						//입력시 끝
+					//입력시 끝
 					$("#P_COMMENTCOUNT").html("&nbsp;"+commentCount);
 					$("#maincomment"+pNo).html("&nbsp;"+commentCount);
 					$("#memoDiv").scrollTop($("#memoDiv")[0].scrollHeight);
@@ -411,9 +400,8 @@
 			});
 			
 		}); 
-	//댓글 삭제 클릭시 삭제처리하기
+		//댓글 삭제 클릭시 삭제처리하기
 		$(document).on('click','.p_commentdelete',function(){
-			
 			if(confirm("정말로 삭제하시겠습니까?")){
 				var p_c_no2 = this.id.split('e')[3];
 				var p_no2 = $('#P_NO').val();
@@ -440,8 +428,6 @@
    //모달 속 좋아요
 	$("#P_LIKECOUNT").click(function(){
 		var pNo = $('#P_NO').val();
-		console.log("@@@@@@@@@@@@@@ P_NO : "+pNo);
-         console.log($(this).css('color'));
          if($(this).css('color')=='rgb(0, 0, 0)'){
         	 $(this)
         	 .removeClass("fa fa-heart-o")
@@ -456,11 +442,9 @@
                          p_no: pNo
                      },
                      success: function (data) {
-                   	  console.log("pNo");
                       $("#like"+pNo).removeClass("fa fa-heart-o").addClass("fa fa-heart").css("color", "red");
                       $("#like"+pNo).html("&nbsp;"+data);
                       $("#P_LIKECOUNT").html("&nbsp;"+data);
-                      console.log(data);
                      }
               });
          }
@@ -487,8 +471,6 @@
       }); 
    
 	  //좋아요 체크 시작         
-      //하트 버튼 및 북마트 버튼 판단 변수   
-      //하트 버튼 작동 및 좋아요 카운트
       $(".likeSpan").click(function(){
           var p_no1 = this.id.split('e')[1];
          console.log($(this).css('color'));
@@ -569,16 +551,6 @@
             wPercent += 0.6;
           } , 10);
      }
-     
-    /*  $(function(){
-        $('button').click(function(){
-           console.log(this);
-           console.log(this.id);
-           var id = this.id;
-           
-           $('#'+id+'ul').append('<li role="presentation"><a role="menuitem" href="#">Action1</a></li>');
-        });
-     }); */
 
    	//신고
    	 $('#btnreport').on('click',function(){
