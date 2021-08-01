@@ -54,6 +54,9 @@ public class CommunityController {
 	public String RecommendationMain(@ModelAttribute("id") String id, @RequestParam Map map, @RequestParam(required = false, defaultValue = "1") int nowPage, HttpServletRequest req, Model model)
 	{
 			map.put("id", req.getSession().getAttribute("id"));
+			
+			
+			
 			// 서비스 호출]
 			ListPagingData listPagingData = recommendationService.selectList(map, req, nowPage);
 			

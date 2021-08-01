@@ -113,13 +113,14 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d963a4891fae00b5fd892884ae34a387&libraries=services"></script>
    <script >
+   		
   		var N="";
   		var E="";
-		var strArr = '${str}'.split("/");
-		var ntrArr = '${ntr}'.split("/");
-		var ptrArr = '${ptr}'.split("/");
-		var ttr1Arr = '${ttr1}'.split("/");
-		var ttr2Arr = '${ttr2}'.split("/");
+		var strArr = '${str}'.split("/");//
+		var ntrArr = '${ntr}'.split("/");//c_no//게시물번호
+		var ptrArr = '${ptr}'.split("/");//price
+		var ttr1Arr = '${ttr1}'.split("/");//datePicker
+		var ttr2Arr = '${ttr2}'.split("/");//timePicker
 		var itr='${itr}'.split("/");
 		var arr = [];
 		for(var i = 0; i<strArr.length-1;i++){
@@ -136,9 +137,7 @@
 		}/////for
 		
 		function mapping(arr){	 
-			var positions = arr;
-			//[{latlng: new kakao.maps.LatLng(x,y)},];
-		
+			var positions = arr;		
 			// 마커 이미지의 이미지 주소입니다
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 			var arr2 = [];
@@ -157,7 +156,6 @@
 			        position: positions[i].latlng, // 마커를 표시할 위치
 			        image : markerImage // 마커 이미지 
 		    });
-		    
 		    
 		    var content = '<div class="wrap">' + 
 							   	'	<div class= "info">'+

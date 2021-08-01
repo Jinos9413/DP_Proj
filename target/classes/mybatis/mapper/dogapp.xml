@@ -112,7 +112,9 @@
 	</select>
 	<insert id="careInsert" parameterType="Map">
 		INSERT INTO care
-		VALUES(SEQ_CARE.NEXTVAL,#{id},DEFAULT,#{care_title},#{care_content}, #{care_clickLineL} ,#{care_clickLineP},#{care_clickLineA},#{care_datepicker},#{care_timepicker},#{care_price},#{care_images},0,0,DEFAULT)
+		VALUES(SEQ_CARE.NEXTVAL,#{id},DEFAULT,#{care_title},#{care_content},
+			 #{care_clickLineL} ,#{care_clickLineP},#{care_clickLineA},
+			 #{care_datepicker},#{care_timepicker},#{care_price},#{care_images},0,0,DEFAULT)
 	</insert>
 	<select id="careSelectOne" parameterType="Map" resultType="CareDTO">
 		SELECT c.*,m.name FROM
@@ -381,11 +383,11 @@
 		INSERT INTO R_REPORT
 		VALUES(SEQ_R_REPORT.NEXTVAL,#{r_no},#{id},#{r_r_title},#{r_r_content},DEFAULT)
 	</insert>
-<!-- 
+ 
 	<select id="r_ReportSelectList" parameterMap="Map" resultType="Map">
 		SELECT r_no FROM r_report WHERE id=#{id}
 	</select>
- -->	
+	
 	
 	
 	<!-- 커뮤니티 사진 게시판 -->

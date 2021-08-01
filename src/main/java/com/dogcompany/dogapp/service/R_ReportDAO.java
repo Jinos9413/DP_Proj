@@ -18,9 +18,9 @@ public class R_ReportDAO {
 	public int insert(Map map) {
 		return sqlMapper.insert("r_reportInsert",map);
 	}
-//	public List<Object> selectList(Map map) {
-//		return sqlMapper.selectList("r_reportSelectList",map);
-//	}
+	public List<Object> selectList(Map map) {
+		return sqlMapper.selectList("r_reportSelectList",map);
+	}
 	
 		
 }///////////class

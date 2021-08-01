@@ -23,8 +23,8 @@ public class R_ReportService {
 		return dao.insert(map);
 	}
 	
-//	public List<Object> map(Map map){
-//		return dao.selectList(map);
-//	}
+	public List<Object> map(Map map){
+		return dao.selectList(map);
+	}
 	
 }////////////

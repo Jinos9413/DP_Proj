@@ -78,7 +78,7 @@
 					            
 					            <div class="blog-item-wrapper wow fadeInUp" data-wow-delay="0.1s">
 					            	<a href="<c:url value="#?R_NO=${item.R_NO}&nowPage="/><c:out value="${param.nowPage}" default="1"/>" style="display: block;" >
-					              		
+					              	
 					              	</a>
 			
 					              	<div class="drawingMap" id="drawingMap${loop.index}"></div>

@@ -48,9 +48,8 @@
 		</div>
 		<div class="row">
 		<div class="col-md-12">
+		
 			<form method="post" action="<c:url value='/Care/CareWrite.do'/>" method="post" id="frm" enctype="multipart/form-data">
-				
-				
 				<div class="row">
 					<div class="col-md-offset-1 col-md-2">
 						<div class="form-group" style="line-height: 50px;">
@@ -65,7 +64,8 @@
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="btn btn-common" for="real-input">파일선택</label>
-							<input type="file" name="care_images" id="real-input" multiple="multiple" accept="image/gif, image/jpeg, image/png" style="display: none;">
+							<input type="file" name="care_images" id="real-input" multiple="multiple" 
+								accept="image/gif, image/jpeg, image/png" style="display: none;">
 						</div>
 					</div>
 				</div>
@@ -208,10 +208,10 @@
 		    } 
 		});    
 	   
-	   var detailAddr;
+	   var detailAddr;//care_clickLineA
 	   var drawingFlag = false; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
 	   var moveLine; // 선이 그려지고 있을때 마우스 움직임에 따라 그려질 선 객체 입니다
-	   var clickLine // 마우스로 클릭한 좌표로 그려질 선 객체입니다
+	   var clickLine; // 마우스로 클릭한 좌표로 그려질 선 객체입니다
 	   var distanceOverlay; // 선의 거리정보를 표시할 커스텀오버레이 입니다
 	   var dots = {}; // 선이 그려지고 있을때 클릭할 때마다 클릭 지점과 거리를 표시하는 커스텀 오버레이 배열입니다.
 	   function searchDetailAddrFromCoords(coords, callback) {
@@ -303,9 +303,10 @@
 	        moveLine.setPath(movepath);    
 	        moveLine.setMap(map);
 	        
-	        var distance = Math.round(clickLine.getLength() + moveLine.getLength()), // 선의 총 거리를 계산합니다
-	            content = '<div class="dotOverlay distanceInfo">총거리 <span class="number">' + distance + '</span>m</div>'; // 커스텀오버레이에 추가될 내용입니다
-	        
+	     	// 선의 총 거리를 계산합니다
+	        var distance = Math.round(clickLine.getLength() + moveLine.getLength()),
+	        // 커스텀오버레이에 추가될 내용입니다
+	            content = '<div class="dotOverlay distanceInfo">총거리 <span class="number">'+ distance + '</span>m</div>'; 
 	        // 거리정보를 지도에 표시합니다
 	        showDistance(content, mousePosition);   
 	    }             
@@ -314,52 +315,38 @@
 	// 지도에 마우스 오른쪽 클릭 이벤트를 등록합니다
 	// 선을 그리고있는 상태에서 마우스 오른쪽 클릭 이벤트가 발생하면 선 그리기를 종료합니다
 	kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
-		
 	    // 지도 오른쪽 클릭 이벤트가 발생했는데 선을 그리고있는 상태이면
 	    if (drawingFlag) {
-	        
 	        // 마우스무브로 그려진 선은 지도에서 제거합니다
 	        moveLine.setMap(null);
 	        moveLine = null;  
-	        
 	        // 마우스 클릭으로 그린 선의 좌표 배열을 얻어옵니다
 	        var path = clickLine.getPath();
-	      
 	        // 선을 구성하는 좌표의 개수가 2개 이상이면
 	        if (path.length > 1) {
-
 	            // 마지막 클릭 지점에 대한 거리 정보 커스텀 오버레이를 지웁니다
 	            if (dots[dots.length-1].distance) {
 	                dots[dots.length-1].distance.setMap(null);
 	                dots[dots.length-1].distance = null;    
 	            }
-
 	            var distance = Math.round(clickLine.getLength()), // 선의 총 거리를 계산합니다
 	                content = getTimeHTML(distance); // 커스텀오버레이에 추가될 내용입니다
-	                
 	            // 그려진 선의 거리정보를 지도에 표시합니다
 	            showDistance(content, path[path.length-1]);  
-	           	
+	         
 	        } else {
-
 	            // 선을 구성하는 좌표의 개수가 1개 이하이면 
 	            // 지도에 표시되고 있는 선과 정보들을 지도에서 제거합니다.
 	            deleteClickLine();
 	            deleteCircleDot(); 
 	            deleteDistnce();
-
 	        }
 	        $('#testtext').val(Math.round(clickLine.getLength()));
 	        var testdata = clickLine.getPath();
 	        console.log(testdata);
 	        //var clickLineP=JSON.stringify(clickLine.getPath());
-	        var clickLineP=JSON.stringify({"test":testdata});
-	        console.log({"test":testdata});
-	        console.log(clickLineP);
-	        
+	        var clickLineP=JSON.stringify({"test":testdata});      
 	        var json = JSON.parse(clickLineP);
-	        console.log(json);
-	        console.log(json.test);
 	        
 	        $('#testtext2').val(clickLineP);
 	        $('#testtext3').val(detailAddr);
@@ -379,14 +366,11 @@
 	// 마우스 드래그로 그려지고 있는 선의 총거리 정보를 표시하거
 	// 마우스 오른쪽 클릭으로 선 그리가 종료됐을 때 선의 정보를 표시하는 커스텀 오버레이를 생성하고 지도에 표시하는 함수입니다
 	function showDistance(content, position) {
-	    if (distanceOverlay) { // 커스텀오버레이가 생성된 상태이면
-	        
+	    if (distanceOverlay) { // 커스텀오버레이가 생성된 상태이면	        
 	        // 커스텀 오버레이의 위치와 표시할 내용을 설정합니다
 	        distanceOverlay.setPosition(position);
-	        distanceOverlay.setContent(content);
-	        
-	    } else { // 커스텀 오버레이가 생성되지 않은 상태이면
-	        
+	        distanceOverlay.setContent(content);	        
+	    } else { // 커스텀 오버레이가 생성되지 않은 상태이면        
 	        // 커스텀 오버레이를 생성하고 지도에 표시합니다
 	        distanceOverlay = new kakao.maps.CustomOverlay({
 	            map: map, // 커스텀오버레이를 표시할 지도입니다
@@ -396,8 +380,7 @@
 	            yAnchor: 0,
 	            zIndex: 3  
 	        });      
-	    }
-	    
+	    } 
 	}
 
 	// 그려지고 있는 선의 총거리 정보와 
@@ -419,10 +402,8 @@
 	        position: position,
 	        zIndex: 1
 	    });
-
 	    // 지도에 표시합니다
 	    circleOverlay.setMap(map);
-
 	    if (distance > 0) {
 	        // 클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다
 	        var distanceOverlay = new kakao.maps.CustomOverlay({
@@ -431,11 +412,9 @@
 	            yAnchor: 1,
 	            zIndex: 2
 	        });
-
 	        // 지도에 표시합니다
 	        distanceOverlay.setMap(map);
 	    }
-
 	    // 배열에 추가합니다
 	    dots.push({circle:circleOverlay, distance: distanceOverlay});
 	}
@@ -443,17 +422,14 @@
 	// 클릭 지점에 대한 정보 (동그라미와 클릭 지점까지의 총거리)를 지도에서 모두 제거하는 함수입니다
 	function deleteCircleDot() {
 	    var i;
-
 	    for ( i = 0; i < dots.length; i++ ){
 	        if (dots[i].circle) { 
 	            dots[i].circle.setMap(null);
 	        }
-
 	        if (dots[i].distance) {
 	            dots[i].distance.setMap(null);
 	        }
 	    }
-
 	    dots = [];
 	}
 
@@ -472,7 +448,6 @@
 	    }
 	    walkMin = '<span class="number">' + walkkTime % 60 + '</span>분'
 
-
 	    // 거리와 도보 시간, 자전거 시간을 가지고 HTML Content를 만들어 리턴합니다
 	    var content = '<ul class="dotOverlay distanceInfo">';
 	    content += '    <li>';
@@ -482,7 +457,6 @@
 	    content += '        <span class="label">도보</span>' + walkHour + walkMin;
 	    content += '    </li>';
 	    content += '</ul>'
-
 	    return content;   
 	}
 	
