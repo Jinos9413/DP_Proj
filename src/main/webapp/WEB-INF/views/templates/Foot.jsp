@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- Footer Section Start -->
-
+      <jsp:include page="/WEB-INF/views/templates/chatBot.jsp"/>
     <footer>          
       <div class="container">
         <div class="row">
@@ -18,6 +18,9 @@
     </footer>
     <!-- Footer Section End --> 
     <!-- Go To Top Link -->
+     
+     
+  
     <a href="#" class="back-to-top">
       <i class="lnr lnr-arrow-up"></i>
     </a>

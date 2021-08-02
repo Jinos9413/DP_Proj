@@ -40,6 +40,7 @@
         </div> 
       </div>      
     </header> 
+    
     <!-- Features Section Start -->
     <section id="features" class="section" data-stellar-background-ratio="0.2">
       <div class="container">

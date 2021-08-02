@@ -190,7 +190,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<input type="hidden" class="form-control" name="joindate">
-										<input style="color: black;" type="text" class="form-control" id="datepicker" name="birth" placeholder="생년월일" readonly="readonly">
+										<input style="color: black;" type="text" class="form-control" id="datepicker" name="birth" placeholder="생년월일" >
 									</div>
 								</div>
 						</div>

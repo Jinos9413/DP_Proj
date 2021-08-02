@@ -4,23 +4,29 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="mybatis.mapper.dogapp">
-	<!-- 회원가입/로근인 관련 -->
+	<!-- 회원가입/로그인 관련 -->
+	    <!-- 회원가입 -->
 	<insert id="memberJoin" parameterType="Map">
 		INSERT INTO MEMBER(ID, PWD, NAME, NICKNAME,GENDER,ADDR,ADDR2,BIRTH,JOINDATE,POSTCODE,PIC_NAME,POWER) 
 		VALUES(#{id},#{pwd},#{name},#{nickname},#{gender},#{addr},#{addr2},to_date(#{birth},'YY/MM/DD'),DEFAULT,#{postcode},#{pic_name},DEFAULT)
 	</insert>
+		<!-- 로그인 -->
 	<select id="memberExist" parameterType="memberDTO" resultType="int">
 		SELECT COUNT(*) FROM MEMBER WHERE id=#{id}
 	</select>
+	    <!-- 아이디 중복 -->
 	<select id="memberidChk" resultType="int">
 		SELECT COUNT(*) FROM MEMBER WHERE ID = #{id}
 	</select>
+	    <!-- 닉네임 중복 -->
 	<select id="membernickChk" resultType="int">
 		SELECT COUNT(*) FROM MEMBER WHERE NICKNAME = #{nickname}
 	</select>
+	    <!-- 비밀번호 확인 -->
 	<select id="memberIsMember" parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM member WHERE id=#{id} AND pwd=#{pwd}	
 	</select>
+	    <!-- 회원등급 -->
 	<select id="memberGetPower" parameterType="Map" resultType="Map">
 		SELECT power FROM member WHERE id=#{id}	
 	</select>
@@ -30,33 +36,40 @@
 	<select id="memberGetAddr" parameterType="Map" resultType="Map">
 		SELECT addr FROM member WHERE id=#{id}	
 	</select>
+	    <!--회원정보 확인 -->
 	<select id="memberSelectOneMember" parameterType="Map" resultType="Map">
 		SELECT * FROM member WHERE id=#{id}	
 	</select>
 	
 	<!-- 마이페이지 -->
+		<!--회원정보 확인 -->
 	<select id="memberList" parameterType="Map" resultType="Map">
 		SELECT * FROM member WHERE id = #{id}
 	</select>
+		<!--회원정보 수정 -->
 	<update id="updateProfile" parameterType="map" >
 		UPDATE member SET PWD=#{pwd} , NICKNAME=#{nickname}, ADDR=#{addr}, ADDR2=#{addr2}, PIC_NAME=#{pic_name}
 		WHERE id=#{id}	
 	</update>
+	    <!--강아지 등록 -->
 	<insert id="dogJoin" parameterType="Map">
 		INSERT INTO PET(ID,PET_NO, PET_NAME, PET_GENDER,PET_BIRTH,PET_WEIGHT,PET_PROFILE) 
 		VALUES(#{id},SEQ_PET.NEXTVAL,#{dog_name},#{dog_gender},#{dog_birth},#{dog_weight},#{petpic_name}) 
 	</insert>
+	    <!--강아지 정보확인 -->
 	<select id="dogList" parameterType="Map" resultType="Map">
 		SELECT p.* 
 		FROM pet p
 		JOIN member m ON m.id = p.id 
 		WHERE m.id =#{id}
 	</select>
+	      <!--선택한 강아지 정보확인 -->
 	<select id="dogSelectDogOne" parameterType="Map" resultType="Map">
 		SELECT *
 		FROM pet  
 		WHERE PET_NO =#{SEQ_PET}
 	</select>
+		 <!--강아지 정보 수정 -->
 	<update id="updateMypet" parameterType="map"  >
 		UPDATE PET SET 
 		PET_NAME=#{dog_name} , PET_GENDER=#{dog_gender}, PET_WEIGHT=#{dog_weight}, PET_PROFILE=#{petpic_name} 
