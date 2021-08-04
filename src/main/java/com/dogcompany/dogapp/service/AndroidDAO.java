@@ -14,7 +14,7 @@ public class AndroidDAO {
 	
 	@Autowired
 	private SqlSessionTemplate template;
-
+	
 	public Map selectOneMember(Map map) {
 		return template.selectOne("androidSelectOneMember", map);
 	}
@@ -41,8 +41,9 @@ public class AndroidDAO {
 		return template.selectOne("androidChatSelecttnoListOne", map);
 	}
 
-	
-	
+	public int insertToken(String token) {
+		return template.insert("insertToken",token);
+	}
 	
 	
 	
@@ -72,6 +73,10 @@ public class AndroidDAO {
 
 	public Map selectTnoPerson(Map map) {
 		return template.selectOne("androidChatSelectTnoPerson", map);
+	}
+
+	public List<Map> selectTokens() {
+		return template.selectList("selectTokens");
 	}
 
 	

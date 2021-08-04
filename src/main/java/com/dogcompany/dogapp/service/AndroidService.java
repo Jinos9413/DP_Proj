@@ -44,7 +44,9 @@ public class AndroidService {
 		}
 		return listMap;
 	}
-	
+	public int insertToken(String token) {
+		return dao.insertToken(token);
+	}
 	
 	
 	
@@ -73,4 +75,6 @@ public class AndroidService {
 	public Map selectTnoPerson(Map map) {
 		return dao.selectTnoPerson(map);
 	}
+
+	
 }////////////

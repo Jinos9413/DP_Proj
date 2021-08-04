@@ -5,10 +5,9 @@
   
 <mapper namespace="mybatis.mapper.android">
 	<select id="androidSelectOneMember" parameterType="Map" resultType="Map">
-		SELECT m.*, t_no 
-		FROM MEMBER m
-		JOIN trainer t ON m.id = t.id
-		WHERE m.id=#{id} and pwd=#{pwd}
+		SELECT * 
+		FROM MEMBER
+		WHERE id=#{id} and pwd=#{pwd}
 	</select>
 	<select id="androidSelectCare1" resultType="Map">
 		SELECT * FROM care WHERE care_state = 1
@@ -80,4 +79,11 @@
 		JOIN member m ON t.id = m.id
 		WHERE t_no=#{t_no}
 	</select>
+	<!-- FCM -->
+	<select id="selectTokens" resultType="Map">
+		SELECT TOKEN FROM FCM_TOKENS
+	</select>
+	<insert id="insertToken" parameterType="String">
+		INSERT INTO FCM_TOKENS(FCM_ID,TOKEN) VALUES(TOKENS_SEQ.NEXTVAL,#{token})
+	</insert>
 </mapper>
