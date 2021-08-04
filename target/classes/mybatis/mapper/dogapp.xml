@@ -384,7 +384,7 @@
 		VALUES(SEQ_R_REPORT.NEXTVAL,#{r_no},#{id},#{r_r_title},#{r_r_content},DEFAULT)
 	</insert>
  
-	<select id="r_ReportSelectList" parameterMap="Map" resultType="Map">
+	<select id="r_ReportSelectList" parameterType="Map" resultType="Map">
 		SELECT r_no FROM r_report WHERE id=#{id}
 	</select>
 	
