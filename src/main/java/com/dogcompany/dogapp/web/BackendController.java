@@ -27,6 +27,10 @@ public class BackendController {
 	public String goMain() {
 		return "backend/admin/Home";
 	}
+	@RequestMapping("FCM.do")
+	public String goFCM() {
+		return "backend/admin/PushMessageSend";
+	}
 	@RequestMapping("Trainer.do")
 	public String goTrainer(Model model, Map map) {
 		List<Map> trainerApplyList = service.selectTrainerApplyList();

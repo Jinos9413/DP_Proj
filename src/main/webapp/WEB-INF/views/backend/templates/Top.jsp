@@ -39,6 +39,7 @@
 	                    <a class="dropdown-item" href="#"><i class="ft-mail"></i> My Inbox</a>
 	                    <a class="dropdown-item" href="#"><i class="ft-check-square"></i> Task</a>
 	                    <a class="dropdown-item" href="#"><i class="ft-message-square"></i> Chats</a>
+	                    
                     <div class="dropdown-divider"></div>
                     	<a class="dropdown-item" href="#"><i class="ft-power"></i> Logout</a>
                   </div>
@@ -80,6 +81,9 @@
           </li>
           <li class=" nav-item">
           	<a href="<c:url value="/Backend/P_Report.do"/>"><i class="la la-warning"></i><span style="font-family: sans-serif;">신고</span></a>
+          </li>
+           <li class=" nav-item">
+          	<a href="<c:url value="/Backend/FCM.do"/>"><i class="la la-warning"></i><span style="font-family: sans-serif;">푸시 알림</span></a>
           </li>
         </ul>
       </div>

@@ -41,7 +41,7 @@ public class ClientUIController {
 	@GetMapping("/message")
 	public String message() {	
 		
-		return "PushMessageSend";
+		return "backend/admin/PushMessageSend";
 	}
 	
 	
@@ -62,7 +62,7 @@ public class ClientUIController {
 			}
 		}
 		model.addAttribute("success", success);
-		return "PushMessageSend";
+		return "backend/admin/PushMessageSend";
 	}
 	
 	@Autowired
@@ -72,7 +72,7 @@ public class ClientUIController {
 		//요청헤더 설정용 객체 생성
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
-		headers.add("Authorization", "key=AAAA4lrOPEA:APA91bH4JqGpUBaKzdwXIR3hUm06mrigyUVIpyS49qKOVUSESsPrWLTYcRyHNM1XQO94gjL5mQZ5R6731eG6UAcSY950csktwUB2B5JKSQ8wToO8cIjjd76Q31MRvc_0atWquuBYj-uG");
+		headers.add("Authorization", "key=AAAAXYluvGc:APA91bEvrGePzcxoyx3VofPIMss41t7NMa80GiLHCFFbl6HetJ3gLaVtpZ_anw1BH8tFxZoAWUslw6qwlmBHXf1ekztaD6XWYSkgVEMfbSzzbKG23AUaWI4izES6E7eGsRAO1ExOhR9P");
 		//요청 바디 설정용
 		Map<String,Object> body = new HashMap<String, Object>();
 		body.put("data",messages);

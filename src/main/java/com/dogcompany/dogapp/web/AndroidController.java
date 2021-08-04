@@ -26,6 +26,8 @@ public class AndroidController {
 	public Map join(@RequestParam Map map) {
 		Map member = service.selectOneMember(map);
 		
+		System.out.println(member);
+		
 		if(member == null) {
 			member = new HashMap();
 		}
