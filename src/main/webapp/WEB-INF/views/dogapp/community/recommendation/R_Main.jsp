@@ -78,7 +78,7 @@
 					            
 					            <div class="blog-item-wrapper wow fadeInUp" data-wow-delay="0.1s">
 					            	<a href="<c:url value="#?R_NO=${item.R_NO}&nowPage="/><c:out value="${param.nowPage}" default="1"/>" style="display: block;" >
-					              		
+					              	
 					              	</a>
 			
 					              	<div class="drawingMap" id="drawingMap${loop.index}"></div>
@@ -96,9 +96,11 @@
 										<a href="javascript:"><span class="likeSpan fa fa-heart" style="color: red; font-size: 20px;" id="like${item.R_NO}">&nbsp;${item.R_LIKECOUNT}</span></a>&nbsp;&nbsp;
 									</c:if>
 										<span class="fa fa-comment-o" style="color: black; font-size: 20px;" id="maincomment${item.R_NO}">&nbsp;${item.R_COMMENTCOUNT}</span>
-									<button class="btn btn-info" id="btnreport" data-backdrop="static" data-keyboard="true">신고하기</button>
+					
+									<button class="btn btn-info btnreport" id="btnreport${item.R_NO }" data-backdrop="static" data-keyboard="true">신고하기</button>
+									<button class="btn btn-info btnreportFinish" id="btnreportFinish${item.R_NO }" data-backdrop="static" data-keyboard="true" style="display:none">신고완료</button>
 								</div>
-   									
+   								
    					
 					          </div>
 					         </div>  
@@ -121,7 +123,6 @@
    					<h2 class="modal-title text-center"><p id="R_TITLE" style="font-size: 0.9em;"></p></h2>
    				</div>
    				<div class="modal-body">
-   					
    					<div class="row">
    						<div class="col-md-7">
 		   					<div>
@@ -209,7 +210,7 @@
 			        </form>
 				</div>
 				<div class="modal-footer" id="mfooter">
-					<input class="btn btn-success" id="reportSubmit" type="button" value="신고 등록" />
+					<input class="btn btn-success " id="reportSubmit" type="button" value="신고 등록" />
 					<a href="javascript:" class="btn btn-success" data-dismiss="modal">취소</a><br/>
 				</div>
 			</div>
@@ -271,13 +272,12 @@
 				
 				
 				console.log(data);
-				
 				console.log(data.R_NO);
 				console.log(data.R_CLICKLINEA);
 				console.log(data.R_CLICKLINEP);
 				console.log(JSON.parse(data.R_CLICKLINEP).test[0].Ma);
 				console.log(JSON.parse(data.R_CLICKLINEP).test[0].La);
-				
+			
 				//이미지 캐러셀
 				var images=(data.R_IMAGES).split("/")
 				for(var i = 0; i<images.length-1 ; i++){
@@ -785,16 +785,15 @@
          }
       });
    	 //신고
-   	 $('#btnreport').on('click',function(){
-   		var rNo = $('#R_NO').val();
-		console.log("report R_NO1 : "+rNo);
+   	 $('.btnreport').on('click',function(){
+   		var rNo = this.id.split('port')[1]
+		console.log("report R_NO : "+rNo);
        	$("#myModal").modal('show');
-       	$('#ReportR_NO').val(rNo);
-       	
+       	$('#ReportR_NO').val(rNo);   	
    	 });
    	
    	 $('#reportSubmit').on('click',function(){
-		var rNo = 	$('#ReportR_NO').val();
+		var rNo = $('#ReportR_NO').val();
 		console.log("report R_NO2 : "+rNo);
    		 var rrtitle=$("#R_R_TITLE").val();
    		 console.log(rrtitle);
@@ -821,16 +820,12 @@
    					r_r_content : rrcomment
    				},
    				success: function(data) {
-   				     alert('Success');// 성공시 코드
-   				     if(data==1){
-   				    	$('#btnreportFinish').css('display', '');
-   				   		$('#btnreport').css('display','none');
+   				     alert('Success');// 성공시 코드 
    				     }
-   				}
    			});
-   		 
-   		$('#myModal').modal('hide');
-   		
+  		$('#myModal').modal('hide');
+  		$('#btnreportFinish'+rNo).css('display', '');
+  		$('#btnreport'+rNo).css('display','none');	
    	 });
     </script>
   </body>
